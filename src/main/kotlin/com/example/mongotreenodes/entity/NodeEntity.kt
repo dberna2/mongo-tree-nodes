@@ -10,7 +10,7 @@ data class NodeEntity(
     val id: String? = null,
     val title: String,
     //val hasPermission: Boolean = false,
-    val parents: List<String>? = emptyList(),
-    val ancestors: List<String>? = emptyList(),
-    val children: List<String>? = emptyList()
+    val parents: List<String> = listOf(),
+    val ancestors: List<String> = listOf(),
+    val children: List<String> = listOf()
 )

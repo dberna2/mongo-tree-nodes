@@ -2,7 +2,6 @@ package com.example.mongotreenodes.service
 
 import com.example.mongotreenodes.entity.NodeEntity
 import com.example.mongotreenodes.entity.UserEntity
-import org.apache.commons.collections4.ListUtils
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Criteria.where
@@ -19,6 +18,7 @@ class NodeServiceImpl(val mongoTemplate: MongoTemplate) :
         val user: UserEntity = mongoTemplate.findById(id, UserEntity::class.java)
             ?: throw RuntimeException("User does not exist.")
 
+
         if (user.nodes.contains(nodeName)) {
             return true
         }
@@ -28,7 +28,7 @@ class NodeServiceImpl(val mongoTemplate: MongoTemplate) :
         val nodeEntity = mongoTemplate.findOne(userQueryNode, NodeEntity::class.java)
             ?: throw RuntimeException("Node does not exist.")
 
-        val joinedNewList = ListUtils.union(nodeEntity.parents, nodeEntity.ancestors)
+        val joinedNewList = (nodeEntity.parents + nodeEntity.ancestors).distinct()
 
         val query = Query().addCriteria(buildCriteria("title", joinedNewList))
 

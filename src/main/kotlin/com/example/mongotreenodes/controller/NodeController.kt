@@ -12,7 +12,7 @@ class NodeController(val service: NodeService) {
     fun hasPermissions(@PathVariable id: String, @RequestParam("node") nodeName: String): Boolean {
         val startTime = System.currentTimeMillis()
 
-        val result = service.hasNodePermissions(id, nodeName);
+        val result = service.hasNodePermissions(id, nodeName)
 
         val endTiempo = System.currentTimeMillis() - startTime
         println("Request duration: $endTiempo ms")
