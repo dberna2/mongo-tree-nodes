@@ -11,6 +11,5 @@ data class NodeEntity(
     val title: String,
     //val hasPermission: Boolean = false,
     val parents: List<String> = listOf(),
-    val ancestors: List<String> = listOf(),
-    val children: List<String> = listOf()
+    val ancestors: List<String> = listOf()
 )
