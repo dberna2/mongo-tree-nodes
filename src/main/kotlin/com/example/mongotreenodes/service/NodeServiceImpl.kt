@@ -23,18 +23,19 @@ class NodeServiceImpl(val mongoTemplate: MongoTemplate) :
             return true
         }
 
-        val userQueryNode = Query().addCriteria(where("title").isEqualTo(nodeName))
+        val userQueryNode: Query = Query().addCriteria(where("title").isEqualTo(nodeName))
 
         val nodeEntity = mongoTemplate.findOne(userQueryNode, NodeEntity::class.java)
             ?: throw RuntimeException("Node does not exist.")
 
-        val joinedNewList = (nodeEntity.parents + nodeEntity.ancestors).distinct()
 
+        val joinedNewList =  (nodeEntity.parents union nodeEntity.ancestors).toList()
         val query = Query().addCriteria(buildCriteria("title", joinedNewList))
 
         val nodes: List<NodeEntity> = mongoTemplate.find(query, NodeEntity::class.java)
+        val nodeTitles = nodes.map { it.title }
 
-        return nodes.isNotEmpty()
+        return nodes.isNotEmpty() && user.nodes.any { nodeTitles.contains(it)}
     }
 
     private fun buildCriteria(field: String, values: List<String>): Criteria {
